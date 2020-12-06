@@ -23,16 +23,37 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if valid := checkStr(bounds, target, str); valid {
+		if valid := checkStrPtII(bounds, target, str); valid {
 			validCount++
 		}
 	}
 	fmt.Println(validCount)
 }
 
+// Part 1 solution.
 func checkStr(bounds [2]int, target, str string) bool {
 	count := strings.Count(str, target)
 	return count >= bounds[0] && count <= bounds[1]
+}
+
+// Part 2 solution.
+func checkStrPtII(ordinals [2]int, target, str string) bool {
+	// Adjust ordinals to be 0-indexed and not 1-indexed.
+	ordinals[0], ordinals[1] = ordinals[0]-1, ordinals[1]-1
+
+	charArray := []rune(str)
+	targetChar := []rune(target)[0]
+
+	// Count must be 1 for the str to pass validation
+	count := 0
+
+	for _, ordinal := range ordinals {
+		if charArray[ordinal] == targetChar {
+			count++
+		}
+	}
+
+	return count == 1
 }
 
 func parseLine(line string) ([2]int, string, string, error) {
